@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Plumbs">
@@ -189,7 +184,7 @@ a{-webkit-tap-highlight-color:transparent}
       <div class="fld"><div class="fld-lbl">NOTES</div><textarea id="f-notes" rows="3"></textarea></div>
       <div class="divider">WORKFLOW</div>
       <div class="fld"><div class="fld-lbl">STATUS</div>
-        <select id="f-status"><option>Order In</option><option>Cut</option><option>Fitting</option><option>Complete</option></select>
+        <select id="f-status"><option>Provisional</option><option>Order In</option><option>Cut</option><option>Fitting</option><option>Complete</option></select>
       </div>
       <div class="fld-row" style="margin-bottom:13px">
         <div class="fld"><div class="fld-lbl">CUT DATE</div><input id="f-cutdate" type="date"></div>
@@ -248,8 +243,9 @@ const BIN_NAME   = "pauls-plumbs-tracker";
 const BIN_ID_KEY = "pauls_plumbs_bin_id";
 const LS_KEY     = "pauls_plumbs_orders";
 
-const STAGES = ["Order In","Cut","Fitting","Complete"];
+const STAGES = ["Provisional","Order In","Cut","Fitting","Complete"];
 const SCOL   = {
+  "Provisional": {accent:"#888888",bg:"#1a1a1a"},
   "Order In": {accent:"#4a9eff",bg:"#1a1a2e"},
   "Cut":      {accent:"#f0a500",bg:"#2e2a1a"},
   "Fitting":  {accent:"#b07dff",bg:"#221a2e"},
@@ -258,7 +254,7 @@ const SCOL   = {
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const NOW    = new Date();
 
-let orders=[{"id": "zxrx1azb", "name": "Strachan", "postcode": "NE43 7RB", "ref": "H3247447", "phone": "01661842125", "email": "strachan1@tinyworld.co.uk", "notes": "Booked 19th 9am", "status": "Order In", "cutDate": "2026-05-19", "fitDate": "", "month": 4, "year": 2026, "address": "285 New Ridley Road\nStocksfield\nNorthumberland\nNE43 7RB", "consultantNo": "1034", "custNo": "5867320 / 1"}, {"id": "cgak1mwo", "name": "Johnson", "postcode": "DL3 9XZ", "ref": "H3248403", "phone": "07859071826", "email": "", "notes": "Cut 1.30-3\n", "status": "Order In", "cutDate": "2026-05-19", "fitDate": "", "month": 4, "year": 2026, "address": "25 Squires Court Woodland Road\nWoodland Road\nDarlington\nDL3 9XZ", "consultantNo": "9601", "custNo": "5867582 / 1"}, {"id": "w9umgze0", "name": "Marr", "postcode": "DL16 7HH", "ref": "H3248485", "phone": "07930445977", "email": "marr0191@gmail.com", "notes": "Cut Tuesday Pm\n", "status": "Order In", "cutDate": "2026-05-19", "fitDate": "", "month": 4, "year": 2026, "address": "21 North Close\nKirk Merrington\nSpennymoor\nDurham\nDL16 7HH", "consultantNo": "9601", "custNo": "5868590 / 1"}, {"id": "f8e72djp", "name": "Greijer", "postcode": "DL10 6SB", "ref": "H3248542", "phone": "07776204498", "email": "pipagreijer@outlook.com", "notes": "Booked 20th 9am\n", "status": "Order In", "cutDate": "2026-05-20", "fitDate": "", "month": 4, "year": 2026, "address": "14 Kneeton Park\nMiddleton Tyas\nRichmond\nDL10 6SB", "consultantNo": "9601", "custNo": "5868419 / 1"}, {"id": "1ufg9es8", "name": "Harris", "postcode": "DH1 4LA", "ref": "H3248691", "phone": "07933111479", "email": "wendydharris@gmail.com", "notes": "Booked wed 12-1", "status": "Order In", "cutDate": "2026-05-20", "fitDate": "", "month": 4, "year": 2026, "address": "26 Archery Rise\nDurham\nDH1 4LA", "consultantNo": "9601", "custNo": "5869013 / 1"}, {"id": "6f4xfl64", "name": "Franklyn", "postcode": "NN11 2NQ", "ref": "H3247897  ", "phone": "01327702854", "email": "", "notes": "Prov 26th 9am", "status": "Order In", "cutDate": "", "fitDate": "", "month": 4, "year": 2026, "address": "16 Weedon Lane\nNorton\nNN11 2NQ", "consultantNo": "9982", "custNo": "4816830 / 3"}, {"id": "td7vpj4k", "name": "Taylor ", "postcode": "OX28 1GA", "ref": "H3247555", "phone": "01993702819", "email": "doreen.taylor4@btopenworld.com", "notes": "Prov 26th late am/ lunch", "status": "Order In", "cutDate": "", "fitDate": "", "month": 4, "year": 2026, "address": "46 Park View Rd\nWitney Oxfordshire.\nWITNEY\nOX28 1GA", "consultantNo": "1143", "custNo": "5844283 / 3"}], binId=null, viewMonth=NOW.getMonth(), viewYear=NOW.getFullYear();
+let orders=[{"id": "zxrx1azb", "name": "Strachan", "postcode": "NE43 7RB", "ref": "H3247447", "phone": "01661842125", "email": "strachan1@tinyworld.co.uk", "notes": "Booked 19th 9am", "status": "Order In", "cutDate": "2026-05-19", "fitDate": "", "month": 4, "year": 2026, "address": "285 New Ridley Road\nStocksfield\nNorthumberland\nNE43 7RB", "consultantNo": "1034", "custNo": "5867320 / 1"}, {"id": "cgak1mwo", "name": "Johnson", "postcode": "DL3 9XZ", "ref": "H3248403", "phone": "07859071826", "email": "", "notes": "Cut 1.30-3\n", "status": "Order In", "cutDate": "2026-05-19", "fitDate": "", "month": 4, "year": 2026, "address": "25 Squires Court Woodland Road\nWoodland Road\nDarlington\nDL3 9XZ", "consultantNo": "9601", "custNo": "5867582 / 1"}, {"id": "w9umgze0", "name": "Marr", "postcode": "DL16 7HH", "ref": "H3248485", "phone": "07930445977", "email": "marr0191@gmail.com", "notes": "Cut Tuesday Pm\n", "status": "Order In", "cutDate": "2026-05-19", "fitDate": "", "month": 4, "year": 2026, "address": "21 North Close\nKirk Merrington\nSpennymoor\nDurham\nDL16 7HH", "consultantNo": "9601", "custNo": "5868590 / 1"}, {"id": "f8e72djp", "name": "Greijer", "postcode": "DL10 6SB", "ref": "H3248542", "phone": "07776204498", "email": "pipagreijer@outlook.com", "notes": "Booked 20th 9am\n", "status": "Order In", "cutDate": "2026-05-20", "fitDate": "", "month": 4, "year": 2026, "address": "14 Kneeton Park\nMiddleton Tyas\nRichmond\nDL10 6SB", "consultantNo": "9601", "custNo": "5868419 / 1"}, {"id": "1ufg9es8", "name": "Harris", "postcode": "DH1 4LA", "ref": "H3248691", "phone": "07933111479", "email": "wendydharris@gmail.com", "notes": "Booked wed 12-1", "status": "Order In", "cutDate": "2026-05-20", "fitDate": "", "month": 4, "year": 2026, "address": "26 Archery Rise\nDurham\nDH1 4LA", "consultantNo": "9601", "custNo": "5869013 / 1"}, {"id": "6f4xfl64", "name": "Franklyn", "postcode": "NN11 2NQ", "ref": "H3247897  ", "phone": "01327702854", "email": "", "notes": "Prov 26th 9am", "status": "Provisional", "cutDate": "", "fitDate": "", "month": 4, "year": 2026, "address": "16 Weedon Lane\nNorton\nNN11 2NQ", "consultantNo": "9982", "custNo": "4816830 / 3"}, {"id": "td7vpj4k", "name": "Taylor ", "postcode": "OX28 1GA", "ref": "H3247555", "phone": "01993702819", "email": "doreen.taylor4@btopenworld.com", "notes": "Prov 26th late am/ lunch", "status": "Provisional", "cutDate": "", "fitDate": "", "month": 4, "year": 2026, "address": "46 Park View Rd\nWitney Oxfordshire.\nWITNEY\nOX28 1GA", "consultantNo": "1143", "custNo": "5844283 / 3"}], binId=null, viewMonth=NOW.getMonth(), viewYear=NOW.getFullYear();
 let filterStatus="All", expandedId=null, editId=null, deleteId=null;
 
 // ── UTILS ──
