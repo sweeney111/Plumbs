@@ -1,5 +1,3 @@
-sweeney111.github.io/Plumbs
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -294,7 +292,7 @@ async function fetchBin(id){
   const r=await fetch(`${BASE}/b/${id}/latest`,{headers:{"X-Master-Key":MASTER_KEY}});
   if(!r.ok) throw new Error("fetch failed "+r.status);
   const d=await r.json();
-  return Array.isArray(d.record)?d.record:[];
+  return Array.isArray(d.record)?migrateOrders(d.record):[];
 }
 
 async function updateBin(id,data){
@@ -311,6 +309,19 @@ function lsSave(data){ try{localStorage.setItem(LS_KEY,JSON.stringify(data));}ca
 function lsLoad(){ try{const v=localStorage.getItem(LS_KEY);return v?JSON.parse(v):null;}catch(_){return null;} }
 
 // ── INIT ──
+
+  // Migrate old status names to new ones
+  function migrateOrders(orders) {
+    const map = {
+      'Order In': 'Order Logged',
+      'Fitting': 'Fitted'
+    };
+    return orders.map(o => ({
+      ...o,
+      status: map[o.status] || o.status
+    }));
+  }
+
 async function init(){
   // populate selects
   const ms=document.getElementById("f-month");
@@ -337,6 +348,7 @@ async function init(){
     // Try to load from localStorage if we have data there
     const local=lsLoad();
     if(Array.isArray(local)&&local.length){
+      local=migrateOrders(local);
       orders=local;
       await updateBin(binId,orders);
     }
