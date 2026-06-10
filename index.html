@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -432,8 +432,9 @@ function render(){
   }
 
   cards.innerHTML="";
+  try{
   list.forEach(o=>{
-    const c=SCOL[o.status];
+    const c=SCOL[o.status]||{accent:"#888888",bg:"#1a1a1a"};
     const si=STAGES.indexOf(o.status);
     const open=expandedId===o.id;
     const isLast=si===STAGES.length-1;
@@ -443,8 +444,8 @@ function render(){
     const bars=STAGES.map((_,i)=>`<div class="pb" style="background:${i<=si?c.accent:"#1e1e2a"}"></div>`).join("");
 
     const dateBadges=[
-      {l:"CUT",v:o.cutDate,dc:SCOL["Cut"].accent},
-      {l:"FITTING",v:o.fitDate,dc:SCOL["Fitting"].accent}
+      {l:"CUT",v:o.cutDate,dc:"#f0a500"},
+      {l:"FITTING",v:o.fitDate,dc:"#b07dff"}
     ].map(d=>`<div class="dbadge${d.v?" set":""}" style="--dc:${d.dc}"><span class="dl">${d.l}</span><span class="dv">${d.v?fmtDate(d.v):"—"}</span></div>`).join("");
 
     // Expanded nums
@@ -498,6 +499,7 @@ function render(){
       </div>`;
     cards.appendChild(card);
   });
+  }catch(e){cards.innerHTML="<div style='color:#e05c5c;padding:20px;font-size:12px'>ERROR: "+e.message+"</div>";}
 }
 
 // ── INTERACTIONS ──
