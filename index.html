@@ -181,7 +181,7 @@ input,select,textarea,button{font-family:'DM Mono','Courier New',monospace;-webk
     <div class="s-handle"></div>
     <div class="s-top"><div class="s-title">BACKUP & RESTORE</div><button class="s-x tap" onclick="closeBk()">✕</button></div>
     <p style="font-size:11px;color:#555;margin-bottom:20px;line-height:1.7">Copy this code to your <strong style="color:#999">Notes app</strong>. Paste it back to restore if needed.</p>
-    <div class="fld-lbl" id="bk-count">BACKUP CODE</div>
+    <div class="fld-lbl">YOUR BIN ID (tell this to Claude)</div><div id="bin-id-display" style="background:#0c0c14;border:1px solid #252535;color:#f0a500;padding:10px 13px;border-radius:8px;font-size:11px;letter-spacing:1px;margin-bottom:16px;word-break:break-all">Loading...</div><div class="fld-lbl" id="bk-count">BACKUP CODE</div>
     <textarea id="bk-code" rows="4" readonly style="width:100%;background:#0c0c14;border:1px solid #252535;color:#4a9eff;padding:12px 13px;border-radius:8px;font-size:10px;font-family:inherit;resize:none;line-height:1.4;word-break:break-all;margin-bottom:8px"></textarea>
     <button class="tap" id="bk-copy-btn" onclick="copyBk()" style="width:100%;background:#1a1a2e;border:1px solid #4a9eff44;color:#4a9eff;padding:12px;border-radius:8px;font-family:inherit;font-size:12px;cursor:pointer;letter-spacing:1px;margin-bottom:28px">📋 COPY CODE</button>
     <div class="fld-lbl">RESTORE FROM CODE</div>
@@ -518,6 +518,8 @@ function askDel(id){deleteId=id;document.getElementById("conf-ov").classList.add
 function closeConf(){document.getElementById("conf-ov").classList.remove("open");deleteId=null;}
 function confirmDel(){if(deleteId){orders=orders.filter(o=>o.id!==deleteId);saveData();expandedId=null;}closeConf();render();}
 function openBackup(){
+  const bdEl=document.getElementById('bin-id-display');
+  if(bdEl)bdEl.textContent=binId||'Not connected yet — try again in a moment';
   try{document.getElementById("bk-code").value=btoa(unescape(encodeURIComponent(JSON.stringify(orders))));}
   catch(e){document.getElementById("bk-code").value=btoa(JSON.stringify(orders));}
   document.getElementById("bk-count").textContent="BACKUP CODE — "+orders.length+" ORDER"+(orders.length!==1?"S":"");
