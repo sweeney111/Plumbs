@@ -292,7 +292,7 @@ function saveData(){
     if(!binId){setStatus("VIEW ONLY","#444");return;}
     try{await updateBin(binId,orders);setStatus("✓ SAVED","#4ecb71");setTimeout(()=>setStatus("VIEW ONLY","#444"),2000);}
     catch(e){setStatus("⚠ SAVE ERROR","#e05c5c");setTimeout(()=>setStatus("VIEW ONLY","#444"),3000);}
-  },800);
+  },0);
 }
 
 async function init(){
